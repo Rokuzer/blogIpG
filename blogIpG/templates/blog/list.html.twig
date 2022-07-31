@@ -1,0 +1,28 @@
+{% extends 'blog/base.html.twig' %}
+
+{% block content %}
+     <div class="container ">
+        <div class="row">
+            <div id='createNewPost' class="col-4 offset-md-8">
+                <button  type="button" class="btn btn-light m-2">Create New Post</button>
+            </div>
+        </div>
+    </div>
+    <div class="container ">
+        <div class="row">
+                {% if response is defined %}
+                    {% for r in response %}
+                    <div class="col-4">
+                        {{ include('blog/card.html.twig', {title: r.post.title, body: r.post.body, autor: r.autor.name}) }}
+                    </div>
+                    {% endfor %}  
+                {% endif %}
+
+                {% if error is defined %}
+                <div class="alert alert-danger" role="alert">
+                    {{error}}
+                </div>
+                {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -18,11 +18,18 @@ class BlogController extends AbstractController
      */
     public function list()
     {
-        $number = random_int(0, 100);
+        try{
+            $posts = $this->getPosts();
+            $autors = $this->getAutors();
+            $response = [];
+            foreach($posts as $post){
+                $response[] = ['post' => $post, 'autor' => $autors[$post['userId'] - 1]];
+            }
 
-        return $this->render('blog/base.html.twig', [
-            'number' => $number,
-        ]);
+        }catch (\Exception $ex) {
+            return $this->render('blog/list.html.twig', ['error'=>$ex->getMessage()]);
+        }
+        return $this->render('blog/list.html.twig',['response'=> $response]);
     }
 
     /**
@@ -36,10 +43,70 @@ class BlogController extends AbstractController
     /**
      * @Route("/create/{id}", methods={"POST"})
      * @Route("/edit/{id}", methods={"PUT"})
-     * Llamará a la funcion de BlogApiController.
      */
-    public function edit(int $id, Request $request): Response
+    public function create(int $id, Request $request): Response
     {
         // ... edit a post
+    }
+
+    /**
+     * funcion que cogerá todo los posts
+     */
+    private function getPosts (){
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => 'https://jsonplaceholder.typicode.com/posts',
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'GET',
+        ));
+        //setting them to false.
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        
+        $response = json_decode(curl_exec($curl), true);
+        $error = json_decode(curl_error($curl), true);
+        curl_close($curl);
+        if($error){
+            throw new \Exception($error, 100);
+        }
+
+        return $response;
+    }
+
+    /**
+     * funcion que devolverá el autor pasandole un id.
+     */
+    private function getAutors (){
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => 'https://jsonplaceholder.typicode.com/users/',
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'GET',
+        ));
+        //setting them to false.
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        
+        $response = json_decode(curl_exec($curl), true);
+        $error = json_decode(curl_error($curl), true);
+        curl_close($curl);
+        if($error){
+            throw new \Exception($error, 100);
+        }
+
+        return $response;
+        
     }
 }
