@@ -4,6 +4,6 @@
     <p class="card-text">{{ body|length > 120 ? body|slice(0, 120) ~ '...' : body }}</p>
   </div>
   <div class="card-footer text-muted">
-    <a href={{ path('blog_show', {'id': id })}} type="button" class="btn btn-outline-dark">READ MORE</a>
+    <a href={{ path('blog_show', {'id': id })}} type="button" class="btn btn-outline-dark">{{'str_btn_read_more' | trans}}</a>
   </div>
 </div>

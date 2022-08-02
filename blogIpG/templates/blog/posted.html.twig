@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 m-2">
-                 <a href={{ path('blog_list')}} class="btn  btn-outline-dark m-2 float-end">Back to List</a>
+                 <a href={{ path('blog_list')}} class="btn  btn-outline-dark m-2 float-end">{{ 'str_btn_back_list' | trans }}</a>
             </div>
         </div>
         {% if post is defined %}
@@ -20,15 +20,15 @@
                     <div class="col-4">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Autor data sheet</h4>
+                                <h4>{{ 'str_autor_datasheet_title' | trans }}</h4>
                             </div>
                             <div class="card-body">
                                 <blockquote class="blockquote mb-0">
                                 
-                                    <p><strong>Name:</strong> {{post.autor.name}}</p>
-                                    <p><strong>Username:</strong> {{post.autor.username}}</p>
-                                    <p><strong>Email:</strong> {{post.autor.email}}</p>
-                                    <p><strong>Address:</strong></p>
+                                    <p><strong>{{'str_name' | trans}}:</strong> {{post.autor.name}}</p>
+                                    <p><strong>{{'str_username' | trans}}</strong> {{post.autor.username}}</p>
+                                    <p><strong>{{'str_email' | trans}}</strong> {{post.autor.email}}</p>
+                                    <p><strong>{{'str_address' | trans}}</strong></p>
                                     <div class="card">
                                         <ul class="list-group list-group-flush">
                                         {% for key, dat in post.autor.address %}
@@ -36,9 +36,9 @@
                                         {% endfor %}
                                         </ul>
                                     </div>
-                                    <p><strong>Phone:</strong> {{post.autor.phone}}</p>
-                                    <p><strong>Website:</strong> {{post.autor.website}}</p>
-                                    <p><strong>Company:</strong> </p>
+                                    <p><strong>{{'str_phone' | trans}}</strong> {{post.autor.phone}}</p>
+                                    <p><strong>{{'str_website' | trans}}</strong> {{post.autor.website}}</p>
+                                    <p><strong>{{'str_company' | trans}}</strong> </p>
                                     <div class="card">
                                         <ul class="list-group list-group-flush">
                                         {% for key, dat in post.autor.company %}

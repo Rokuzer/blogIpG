@@ -1,6 +1,7 @@
 <?php
 
 // src/Form/Type/BlogType.php
+
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;

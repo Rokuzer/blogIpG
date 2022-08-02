@@ -17,14 +17,14 @@ class Blog
 
     #[ORM\Column(length: 255)]
     private $title;
-    
+
     #[ORM\Column(length: 255)]
     private $body;
 
     #[ORM\Column(length: 255)]
     private $autor;
 
-    
+
     #[ORM\Column(type: 'datetime')]
     protected $created_at;
 
@@ -33,7 +33,7 @@ class Blog
 
     /**
      * @var datetime $updated
-     * 
+     *
      * @ORM\Column(type="datetime", nullable = true)
      */
     protected $updated_at;
@@ -105,7 +105,7 @@ class Blog
 
     public function getUpdatedAt()
     {
-        return $this->update;
+        return $this->update_at;
     }
 
     public function setUpdateAt($update_at): self
@@ -114,5 +114,4 @@ class Blog
 
         return $this;
     }
-
 }
