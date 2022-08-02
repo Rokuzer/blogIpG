@@ -54,4 +54,5 @@ Nota: Cuando se crea en BBDD se lanza mediante el servicio una creación a la ap
 * SCSS y Webpack para todo lo relacionado con CSS utilizando Symfony Encore.
 * Curl para la API
 * POSTMAN para las pruebas de las integraciones.
+* PhpUnit para test unitarios (Crear y editar simple blog)
 
