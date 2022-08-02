@@ -42,6 +42,7 @@ Nota2: Para agilizar el proceso, se ha creado un choiceType con los autores que 
 
 Formulario simple de la entidad Blog, que al darle a "Crear" creará un nuevo POST en la BBDD.
 
+Nota: Cuando se crea en BBDD se lanza mediante el servicio una creación a la api.
 
 ## Herramientas utilizadas
 * Boostrap 5.2
@@ -53,3 +54,4 @@ Formulario simple de la entidad Blog, que al darle a "Crear" creará un nuevo PO
 * SCSS y Webpack para todo lo relacionado con CSS utilizando Symfony Encore.
 * Curl para la API
 * POSTMAN para las pruebas de las integraciones.
+
