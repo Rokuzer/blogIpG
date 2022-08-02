@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class BlogController extends AbstractController
 {
+    #[Route('/', name: 'list')]
     public function list(EntityManagerInterface $em)
     {
         $blogs = $em->getRepository(Blog::class)->findBy(
@@ -48,6 +49,7 @@ class BlogController extends AbstractController
      * también enviará el Blog por API para que quede actualizado si no existe ya.
      *
      */
+    #[Route('/create', name: 'create')]
     public function create(EntityManagerInterface $em, BlogApiServices $service, Request $request): Response
     {
         // creates a task object and initializes some data for this example
