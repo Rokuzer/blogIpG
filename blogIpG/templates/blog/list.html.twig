@@ -3,26 +3,27 @@
 {% block content %}
      <div class="container ">
         <div class="row">
-            <div id='createNewPost' class="col-4 offset-md-8">
+            <div class="col-4 offset-md-8 text-end">
                 <button  type="button" class="btn btn-light m-2">Create New Post</button>
+                <button  type="button" class="btn btn-light m-2">Update Posts to BBDD</button>
             </div>
         </div>
     </div>
     <div class="container ">
         <div class="row">
-                {% if response is defined %}
-                    {% for r in response %}
-                    <div class="col-4">
-                        {{ include('blog/card.html.twig', {title: r.post.title, body: r.post.body, autor: r.autor.name}) }}
-                    </div>
-                    {% endfor %}  
-                {% endif %}
-
-                {% if error is defined %}
-                <div class="alert alert-danger" role="alert">
-                    {{error}}
+            {% if posts is defined %}
+                {% for r in posts %}
+                <div class="col-4">
+                    {{ include('blog/card.html.twig', {title: r.title, body: r.body, autor: r.autor}) }}
                 </div>
-                {% endif %}
+                {% endfor %}  
+            {% endif %}
+
+            {% if error is defined %}
+            <div class="alert alert-danger" role="alert">
+                {{error}}
+            </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

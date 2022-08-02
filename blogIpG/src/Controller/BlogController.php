@@ -5,35 +5,39 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
-
+use App\Service\BlogApiServices;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Blog;
+use App\Form\Type\BlogType;
+use Symfony\Component\HttpFoundation\Request;
 /**
  * @Route("/blog", requirements={"_locale": "en|es|fr"}, name="blog_")
  */
 class BlogController extends AbstractController
 {
 
- /**
-     * @Route("/", name="blog_list")
+    /**
+     * @Route("/", name="list")
      */
-    public function list()
+    public function list(BlogApiServices $service, EntityManagerInterface $em)
     {
         try{
-            $posts = $this->getPosts();
-            $autors = $this->getAutors();
+            $posts = $em->getRepository(Blog::class)->findAll();
+           /* $posts = $service->getPosts();
+            $autors = $service->getAutors();
             $response = [];
             foreach($posts as $post){
                 $response[] = ['post' => $post, 'autor' => $autors[$post['userId'] - 1]];
-            }
+            }*/
 
         }catch (\Exception $ex) {
             return $this->render('blog/list.html.twig', ['error'=>$ex->getMessage()]);
         }
-        return $this->render('blog/list.html.twig',['response'=> $response]);
+        return $this->render('blog/list.html.twig',['posts'=> $posts]);
     }
 
     /**
-    * @Route("/show/{id}", methods={"GET","HEAD"})
+    * @Route("/show/{id}", name="show" )
     */
     public function show(int $id, Request $request): Response
     {
@@ -41,72 +45,39 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/create/{id}", methods={"POST"})
-     * @Route("/edit/{id}", methods={"PUT"})
+     * Esta función persistirá en BBDD la entidad Blog
+     * también enviará el Blog por API para que quede actualizado si no existe ya.
+     * 
+     * @Route("/create", name="create")
      */
-    public function create(int $id, Request $request): Response
+    public function create(EntityManagerInterface $em, Request $request): Response
     {
-        // ... edit a post
+        // creates a task object and initializes some data for this example
+        $blog = new Blog();
+        
+        $form = $this->createForm(BlogType::class, $blog);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // $form->getData() holds the submitted values
+            // but, the original `$task` variable has also been updated
+            $blog = $form->getData();
+            
+            $em->persist($blog);
+            $em->flush();
+            // ... perform some action, such as saving the task to the database
+
+            return $this->redirectToRoute('blog_list');
+        }
+        return $this->renderForm('blog/new.html.twig', [
+            'form' => $form,
+        ]);
     }
 
     /**
-     * funcion que cogerá todo los posts
+     * funcion que actualizará los Blogs
      */
-    private function getPosts (){
-        $curl = curl_init();
-        
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => 'https://jsonplaceholder.typicode.com/posts',
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => '',
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => 'GET',
-        ));
-        //setting them to false.
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        
-        $response = json_decode(curl_exec($curl), true);
-        $error = json_decode(curl_error($curl), true);
-        curl_close($curl);
-        if($error){
-            throw new \Exception($error, 100);
-        }
-
-        return $response;
-    }
-
-    /**
-     * funcion que devolverá el autor pasandole un id.
-     */
-    private function getAutors (){
-        $curl = curl_init();
-        
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => 'https://jsonplaceholder.typicode.com/users/',
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => '',
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => 'GET',
-        ));
-        //setting them to false.
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        
-        $response = json_decode(curl_exec($curl), true);
-        $error = json_decode(curl_error($curl), true);
-        curl_close($curl);
-        if($error){
-            throw new \Exception($error, 100);
-        }
-
-        return $response;
-        
+    public function updatePosts (){
+        $posts = $service->getPosts();
+        $autors = $service->getAutors();
     }
 }

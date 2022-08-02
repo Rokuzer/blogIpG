@@ -4,7 +4,7 @@
   </div>
   <div class="card-body">
       <h5 class="card-title">{{ title|length > 25 ? title|slice(0, 25) ~ '...' : title  }}</h5>
-    <p class="card-text">{{ body|length > 150 ? body|slice(0, 150) ~ '...' : body  }}</p>
+    <p class="card-text">{{ body|length > 120 ? body|slice(0, 120) ~ '...' : body  }}</p>
   </div>
   <div class="card-footer text-muted">
     <a class="btn btn-primary">Visualizar</a>
