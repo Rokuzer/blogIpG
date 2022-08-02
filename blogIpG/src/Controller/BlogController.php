@@ -15,7 +15,7 @@ use App\Repository\BlogRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route("/blog", requirements={"_locale": "en|es|fr"}, name="blog_")
+ * @Route("/", requirements={"_locale": "en|es|fr"}, name="blog_")
  */
 class BlogController extends AbstractController
 {
