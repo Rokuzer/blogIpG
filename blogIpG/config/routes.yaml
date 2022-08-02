@@ -1,3 +1,12 @@
 controllers:
     resource: ../src/Controller/
     type: attribute
+
+blog_list:
+    path: /
+    controller: App\Controller\BlogController::list
+
+
+blog_create:
+    path: /create
+    controller: App\Controller\BlogController::create
