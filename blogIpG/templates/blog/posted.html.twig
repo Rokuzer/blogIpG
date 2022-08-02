@@ -2,44 +2,59 @@
 
 {% block content %}
     <div class="container">
+        <div class="row">
+            <div class="col-12 m-2">
+                 <a href={{ path('blog_list')}} class="btn  btn-outline-dark m-2 float-end">Back to List</a>
+            </div>
+        </div>
         {% if post is defined %}
-            {% if post.blog is defined %}
-                <div class="row">
-                    <div class="col-12 text-light text-center">
-                        <h2>{{post.blog.title}} </h2>
-                    </div>
-                     <div class="col-12 text-light">
+            <div class="row">
+                {% if post.blog is defined %}
+                    <div class="col-8 text-center">
+                        <h1>{{post.blog.title}} </h1>
                         <p>{{post.blog.body}} </p>
-                    </div>
-                </div>
 
-            {% endif %}
-            {% if post.autor is defined %}
-             <hr class="border border-primary border-3 opacity-75">
-                <div class="row">
-                    <div class="col-12 text-light text-center">
-                        <h3>ficha tecnica autor </h3>
                     </div>
-                    <div class="col-12 text-light">
-                        <p>Name: {{post.autor.name}}</p>
-                        <p>Username: {{post.autor.username}}</p>
-                        <p>Email: {{post.autor.email}}</p>
-                        <p>Address: 
-                        {% for key, dat in post.autor.address %}
-                            <p>{{key|capitalize }}: {{dat | join(', ')}}</p>
-                        {% endfor %}
-                        </p>
-                        <p>Phone: {{post.autor.phone}}</p>
-                        <p>Website: {{post.autor.website}}</p>
-                        <p>Company: </p>
-                         {% for key, dat in post.autor.company %}
-                            <p>{{key|capitalize }}: {{dat|join(', ')}}</p>
-                        {% endfor %}
+                {% endif %}
+                {% if post.autor is defined %}
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Autor data sheet</h4>
+                            </div>
+                            <div class="card-body">
+                                <blockquote class="blockquote mb-0">
+                                
+                                    <p><strong>Name:</strong> {{post.autor.name}}</p>
+                                    <p><strong>Username:</strong> {{post.autor.username}}</p>
+                                    <p><strong>Email:</strong> {{post.autor.email}}</p>
+                                    <p><strong>Address:</strong></p>
+                                    <div class="card">
+                                        <ul class="list-group list-group-flush">
+                                        {% for key, dat in post.autor.address %}
+                                            <li class="list-group-item"><strong>{{key|capitalize }}:</strong> {{dat | join(', ')}}</li>
+                                        {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <p><strong>Phone:</strong> {{post.autor.phone}}</p>
+                                    <p><strong>Website:</strong> {{post.autor.website}}</p>
+                                    <p><strong>Company:</strong> </p>
+                                    <div class="card">
+                                        <ul class="list-group list-group-flush">
+                                        {% for key, dat in post.autor.company %}
+                                            <li class="list-group-item"><strong>{{key|capitalize }}:</strong> {{dat | join(', ')}}</li>
+                                        {% endfor %}
+                                        </ul>
+                                    </div>
+                                </blockquote>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            {% endif %}
+                {% endif %}
+            </div>
+
         {% endif %}
-                 <a href={{ path('blog_list')}} class="btn-primary btn">Back to List</a>
 
+       
     </div>
 {% endblock %}

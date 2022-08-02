@@ -1,11 +1,17 @@
 body{
-    background-color: #171e22 !important;
+    background-color: #fff !important;
 }
 
 .card{
-    height: 250px !important;
+    background-color: rgb(247, 247, 247) !important;
 }
 
 .navbar{
     background-color: #171e22 !important;
+}
+
+
+.card-footer{
+    background-color: rgb(247, 247, 247) !important;
+    border-top: 0 !important;
 }

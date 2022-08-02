@@ -1,12 +1,9 @@
-<div class="card text-bg-secondary mb-3 text-center">
-  <div class="card-header">
-     <h5 class="card-title">{{ title|length > 25 ? title|slice(0, 25) ~ '...' : title  }}</h5>
-  </div>
+<div class="card border-0 mb-3 text-center">
   <div class="card-body">
+    <h3 class="card-title">{{ title|length > 25 ? title|slice(0, 25) ~ '...' : title  }}</h3>
     <p class="card-text">{{ body|length > 120 ? body|slice(0, 120) ~ '...' : body }}</p>
   </div>
   <div class="card-footer text-muted">
-
-    <a href={{ path('blog_show', {'id': id })}} class="btn btn-primary">Visualizar</a>
+    <a href={{ path('blog_show', {'id': id })}} type="button" class="btn btn-outline-dark">READ MORE</a>
   </div>
 </div>
