@@ -44,10 +44,12 @@ Formulario simple de la entidad Blog, que al darle a "Crear" creará un nuevo PO
 
 
 ## Herramientas utilizadas
-
 * Boostrap 5.2
 * Symfony 6.1
 * PHP 8.1.6
 * IDLE: Visual Studio
 * Composer
 * XAMPP para la gestión de BBDD.
+* SCSS y Webpack para todo lo relacionado con CSS utilizando Symfony Encore.
+* Curl para la API
+* POSTMAN para las pruebas de las integraciones.
