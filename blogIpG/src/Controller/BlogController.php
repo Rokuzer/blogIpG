@@ -9,6 +9,7 @@ use App\Service\BlogApiServices;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Blog;
 use App\Form\Type\BlogType;
+use App\Repository\BlogRepository;
 use Symfony\Component\HttpFoundation\Request;
 /**
  * @Route("/blog", requirements={"_locale": "en|es|fr"}, name="blog_")
@@ -19,29 +20,29 @@ class BlogController extends AbstractController
     /**
      * @Route("/", name="list")
      */
-    public function list(BlogApiServices $service, EntityManagerInterface $em)
+    public function list(EntityManagerInterface $em)
     {
-        try{
-            $posts = $em->getRepository(Blog::class)->findAll();
-           /* $posts = $service->getPosts();
-            $autors = $service->getAutors();
-            $response = [];
-            foreach($posts as $post){
-                $response[] = ['post' => $post, 'autor' => $autors[$post['userId'] - 1]];
-            }*/
+        $blogs = $em->getRepository(Blog::class)->findBy(
+            array(),
+            array('id' => 'DESC')
+        );
 
-        }catch (\Exception $ex) {
-            return $this->render('blog/list.html.twig', ['error'=>$ex->getMessage()]);
-        }
-        return $this->render('blog/list.html.twig',['posts'=> $posts]);
+        return $this->render('blog/list.html.twig',['posts'=> $blogs]);
     }
 
     /**
     * @Route("/show/{id}", name="show" )
     */
-    public function show(int $id, Request $request): Response
+    public function show(EntityManagerInterface $em, BlogApiServices $service, int $id): Response
     {
-        // ... return a JSON response with the post
+        $blog = $em->getRepository(Blog::class)->find($id);
+        $autor = $service->getAutor($blog->getAutor());
+        $post = ['blog' => $blog, 'autor' => $autor];
+
+        return $this->renderForm('blog/posted.html.twig', [
+            'post' => $post,
+        ]);
+
     }
 
     /**
@@ -50,7 +51,7 @@ class BlogController extends AbstractController
      * 
      * @Route("/create", name="create")
      */
-    public function create(EntityManagerInterface $em, Request $request): Response
+    public function create(EntityManagerInterface $em, BlogApiServices $service, Request $request): Response
     {
         // creates a task object and initializes some data for this example
         $blog = new Blog();
@@ -61,10 +62,11 @@ class BlogController extends AbstractController
             // $form->getData() holds the submitted values
             // but, the original `$task` variable has also been updated
             $blog = $form->getData();
-            
+            $blog->setCreatedAt( new \DateTime("now"));
             $em->persist($blog);
             $em->flush();
-            // ... perform some action, such as saving the task to the database
+            //Se actualiza el blog creado en API
+            $service->sendPost($blog);
 
             return $this->redirectToRoute('blog_list');
         }
@@ -74,10 +76,39 @@ class BlogController extends AbstractController
     }
 
     /**
-     * funcion que actualizará los Blogs
+     * @Route("/delete", name="delete")
      */
-    public function updatePosts (){
-        $posts = $service->getPosts();
-        $autors = $service->getAutors();
+    public function delete(EntityManagerInterface $em, Request $request): Response
+    {
+
+        return $this->redirectToRoute('blog_list');
+    }
+
+    /**
+     * funcion que actualizará los Blogs
+     * @Route("/update", name="update")
+     */
+    public function updatePosts (EntityManagerInterface $em, BlogApiServices $service){
+        $postsApi = $service->getPosts();
+        $autorsApi = $service->getAutors();
+    
+        foreach($postsApi as $postApi){
+            $blog = $em->getRepository(Blog::class)->findOneByCodigo($postApi['id']);
+
+            $autorApi = $autorsApi[$postApi['userId'] - 1];
+            if (!$blog instanceof Blog){
+                $blog = new Blog();
+                $blog->setCreatedAt( new \DateTime("now"));
+                $em->persist($blog);
+            }
+            $blog->setAutor($autorApi['id']);
+            $blog->setBody($postApi['body']);
+            $blog->setCodigo($postApi['id']);
+            $blog->setTitle($postApi['title']);
+            $blog->setUpdateAt( new \DateTime("now"));
+
+        }
+        $em->flush();
+        return $this->redirectToRoute('blog_list');
     }
 }

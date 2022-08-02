@@ -7,6 +7,8 @@
         <div class="col-12 text-light">
           {{ form_start(form) }} 
                  {{ form_widget(form) }}
+                 <button type="submit" id="blog_Create" class="btn-primary btn">Create</button>
+                 <a href={{ path('blog_list')}} class="btn-primary btn">Back to List</a>
             {{ form_end(form) }} 
         </div>
         </div>

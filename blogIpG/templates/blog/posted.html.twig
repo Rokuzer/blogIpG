@@ -1,0 +1,45 @@
+{% extends 'blog/base.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        {% if post is defined %}
+            {% if post.blog is defined %}
+                <div class="row">
+                    <div class="col-12 text-light text-center">
+                        <h2>{{post.blog.title}} </h2>
+                    </div>
+                     <div class="col-12 text-light">
+                        <p>{{post.blog.body}} </p>
+                    </div>
+                </div>
+
+            {% endif %}
+            {% if post.autor is defined %}
+             <hr class="border border-primary border-3 opacity-75">
+                <div class="row">
+                    <div class="col-12 text-light text-center">
+                        <h3>ficha tecnica autor </h3>
+                    </div>
+                    <div class="col-12 text-light">
+                        <p>Name: {{post.autor.name}}</p>
+                        <p>Username: {{post.autor.username}}</p>
+                        <p>Email: {{post.autor.email}}</p>
+                        <p>Address: 
+                        {% for key, dat in post.autor.address %}
+                            <p>{{key|capitalize }}: {{dat | join(', ')}}</p>
+                        {% endfor %}
+                        </p>
+                        <p>Phone: {{post.autor.phone}}</p>
+                        <p>Website: {{post.autor.website}}</p>
+                        <p>Company: </p>
+                         {% for key, dat in post.autor.company %}
+                            <p>{{key|capitalize }}: {{dat|join(', ')}}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+                 <a href={{ path('blog_list')}} class="btn-primary btn">Back to List</a>
+
+    </div>
+{% endblock %}

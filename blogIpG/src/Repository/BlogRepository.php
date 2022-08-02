@@ -39,6 +39,16 @@ class BlogRepository extends ServiceEntityRepository
         }
     }
 
+    public function findPostWithCodigoNotNull(){
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $result = $qb->select('b')
+               ->from('blog','b')
+               ->where($qb->expr()->isNotNull('t.codigo'))
+               ->groupBy('t.codigo')
+               ->getQuery()
+               ->getResult();
+    }
+
 //    /**
 //     * @return Blog[] Returns an array of Blog objects
 //     */
