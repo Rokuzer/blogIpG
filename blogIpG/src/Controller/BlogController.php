@@ -92,7 +92,7 @@ class BlogController extends AbstractController
     }
 
     /**
-     * funcion que actualizará los Blogs
+     * funcion que actualizará los Blogs obtenidos de jsonplaceholder 
      */
     #[Route('/update', name: 'update')]
     public function updatePosts(EntityManagerInterface $em, BlogApiServices $service)

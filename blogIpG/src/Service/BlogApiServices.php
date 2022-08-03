@@ -33,7 +33,7 @@ class BlogApiServices
     }
 
     /**
-     * funcion que devolverá el autor pasandole un id.
+     * funcion que devolverá todos los autores de jsonplaceholder.
      */
     public function getAutors()
     {
@@ -50,8 +50,8 @@ class BlogApiServices
     }
 
     /**
-       * funcion que devolverá el autor pasandole un id.
-       */
+     * funcion que devolverá el autor pasandole un id.
+     */
     public function getAutor($id)
     {
         $url = 'https://jsonplaceholder.typicode.com/users/'.$id;
@@ -67,8 +67,8 @@ class BlogApiServices
     }
 
     /**
-   * funcion que devolverá el autor pasandole un id.
-   */
+     * funcion envia el post a jsonplaceholder
+     */
     public function sendPost($post)
     {
         $array = [
@@ -95,6 +95,9 @@ class BlogApiServices
         return $post;
     }
 
+    /**
+     * funcion base para el envío de CURL
+     */
     private function sendCurl($url, $type = 'GET', $json = null)
     {
         $curl = curl_init();

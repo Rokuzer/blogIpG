@@ -9,6 +9,10 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class BlogTest extends WebTestCase
 {
+
+    /**
+     * Crea un post en test
+     */
     public function test_create_simple_blog(): void
     {
         $post = new Blog();
@@ -22,6 +26,9 @@ class BlogTest extends WebTestCase
         $this->assertEquals($post instanceof Blog, true);
     }
 
+    /**
+     * Edita un post en test
+     */
     public function test_edit_simple_blog(): void
     {
         static::bootKernel();

@@ -28,6 +28,9 @@ class ApiBlogController
         $this->service = $service;
     }
 
+    /**
+     * Api que devuelve un json con todos los posts del blog.
+     */
     #[Route('posts', name: 'get_all_posts', methods: ['GET'])]
     public function getAll(): JsonResponse
     {
@@ -46,6 +49,9 @@ class ApiBlogController
         return new JsonResponse($arrayPosts, Response::HTTP_OK);
     }
 
+    /**
+     * Api crea un post en el blog y lo manda por jsonplaceholder
+     */
     #[Route('addPost', name: 'add_post', methods: ['POST'])]
     public function addPost(Request $request, BlogApiServices $service): JsonResponse
     {

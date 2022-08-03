@@ -24,7 +24,9 @@ class BlogRepository extends ServiceEntityRepository
         parent::__construct($registry, Blog::class);
         $this->service = $service;
     }
-
+    /**
+     * Persiste el post
+     */
     public function add(Blog $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -34,6 +36,9 @@ class BlogRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Eliminar post
+     */
     public function remove(Blog $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -41,16 +46,5 @@ class BlogRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
-    }
-
-    public function findPostWithCodigoNotNull()
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $result = $qb->select('b')
-               ->from('blog', 'b')
-               ->where($qb->expr()->isNotNull('t.codigo'))
-               ->groupBy('t.codigo')
-               ->getQuery()
-               ->getResult();
     }
 }
