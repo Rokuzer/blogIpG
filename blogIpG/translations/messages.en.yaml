@@ -1,7 +1,7 @@
 str_tituloBlog: Blog IpGlobal
 str_btn_read_more: READ MORE
 str_create_new_post: Create New Post
-str_update_bbbdd: Update Posts to BBDD
+str_update_bbbdd: Update post from jsonplaceholder
 str_btn_back_list: Back to List
 str_autor_datasheet_title: Autor data sheet
 str_name: Name
