@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\UnitTest;
+namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Service\BlogApiServices;
