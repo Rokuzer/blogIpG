@@ -26,12 +26,12 @@ class BlogController extends AbstractController
     #[Route('/', name: 'list')]
     public function list(EntityManagerInterface $em)
     {
-        $blogs = $em->getRepository(Blog::class)->findBy(
+        $posts = $em->getRepository(Blog::class)->findBy(
             array(),
             array('id' => 'DESC')
         );
 
-        return $this->render('blog/list.html.twig', ['posts'=> $blogs]);
+        return $this->render('blog/list.html.twig', ['posts'=> $posts]);
     }
 
     /**
@@ -40,42 +40,40 @@ class BlogController extends AbstractController
     #[Route('/show/{id}', name: 'show')]
     public function show(EntityManagerInterface $em, BlogApiServices $service, int $id): Response
     {
-        $blog = $em->getRepository(Blog::class)->find($id);
-        $post = null;
-        if ($blog) {
-            $autor = $service->getAutor($blog->getAutor());
-            $post = ['blog' => $blog, 'autor' => $autor];
+        $post = $em->getRepository(Blog::class)->find($id);
+        $arrayPost = null;
+        if ($post) {
+            $autor = $service->getAutor($post->getAutor());
+            $arrayPost = ['blog' => $post, 'autor' => $autor];
         }
 
         return $this->renderForm('blog/posted.html.twig', [
-            'post' => $post,
+            'post' => $arrayPost,
         ]);
     }
 
     /**
      * Esta función persistirá en BBDD la entidad Blog
      * también enviará el Blog por API para que quede actualizado si no existe ya.
-     *
      */
     #[Route('/create', name: 'create')]
     public function create(EntityManagerInterface $em, BlogApiServices $service, Request $request): Response
     {
         // creates a task object and initializes some data for this example
-        $blog = new Blog();
+        $post = new Blog();
 
-        $form = $this->createForm(BlogType::class, $blog);
+        $form = $this->createForm(BlogType::class, $post);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // $form->getData() holds the submitted values
             // but, the original `$task` variable has also been updated
-            $blog = $form->getData();
-            $blog->setCreatedAt(new \DateTime("now"));
+            $post = $form->getData();
+            $post->setCreatedAt(new \DateTime("now"));
 
             //Se actualiza el blog creado en API
-            $response = $service->sendPost($blog);
-            $blog->setCodigo($response['id']??null);
+            $post = $service->sendPost($post);
 
-            $em->persist($blog);
+            $em->persist($post);
             $em->flush();
             return $this->redirectToRoute('blog_list');
         }
@@ -103,19 +101,19 @@ class BlogController extends AbstractController
         $autorsApi = $service->getAutors();
 
         foreach ($postsApi as $postApi) {
-            $blog = $em->getRepository(Blog::class)->findOneByCodigo($postApi['id']);
+            $post = $em->getRepository(Blog::class)->findOneByCodigo($postApi['id']);
 
             $autorApi = $autorsApi[$postApi['userId'] - 1];
-            if (!$blog instanceof Blog) {
-                $blog = new Blog();
-                $blog->setCreatedAt(new \DateTime("now"));
-                $em->persist($blog);
+            if (!$post instanceof Blog) {
+                $post = new Blog();
+                $post->setCreatedAt(new \DateTime("now"));
+                $em->persist($post);
             }
-            $blog->setAutor($autorApi['id']);
-            $blog->setBody($postApi['body']);
-            $blog->setCodigo($postApi['id']);
-            $blog->setTitle($postApi['title']);
-            $blog->setUpdateAt(new \DateTime("now"));
+            $post->setAutor($autorApi['id']);
+            $post->setBody($postApi['body']);
+            $post->setCodigo($postApi['id']);
+            $post->setTitle($postApi['title']);
+            $post->setUpdateAt(new \DateTime("now"));
         }
         $em->flush();
         return $this->redirectToRoute('blog_list');

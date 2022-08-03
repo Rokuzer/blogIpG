@@ -50,8 +50,8 @@ class BlogApiServices
     }
 
     /**
-   * funcion que devolverá el autor pasandole un id.
-   */
+       * funcion que devolverá el autor pasandole un id.
+       */
     public function getAutor($id)
     {
         $url = 'https://jsonplaceholder.typicode.com/users/'.$id;
@@ -72,10 +72,11 @@ class BlogApiServices
     public function sendPost($post)
     {
         $array = [
-        'userId' => $post->getAutor(),
-        'title' => $post->getTitle(),
-        'body' => $post->getBody()
-      ];
+            'userId' => $post->getAutor(),
+            'title' => $post->getTitle(),
+            'body' => $post->getBody()
+        ];
+
         $json = json_encode($array);
 
         $url = 'https://jsonplaceholder.typicode.com/posts';
@@ -88,7 +89,10 @@ class BlogApiServices
             throw new \Exception($error, 100);
         }
 
-        return $response;
+        //Se actualiza el post creado en API
+        $post->setCodigo($response['id'] ?? null);
+
+        return $post;
     }
 
     private function sendCurl($url, $type = 'GET', $json = null)

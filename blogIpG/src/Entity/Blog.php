@@ -5,9 +5,10 @@ namespace App\Entity;
 use App\Repository\BlogRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
+use JsonSerializable;
 
 #[ORM\Entity(repositoryClass: BlogRepository::class)]
-class Blog
+class Blog implements JsonSerializable
 {
     #[ORM\Column(type: 'integer')]
     #[ORM\Id, ORM\GeneratedValue()]
@@ -114,5 +115,15 @@ class Blog
         $this->update_at = $update_at;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return array(
+            'id' => $this->id,
+            'codigo' => $this->codigo,
+            'title' => $this->title,
+            'body'=> $this->body,
+        );
     }
 }

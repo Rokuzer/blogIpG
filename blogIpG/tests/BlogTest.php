@@ -11,26 +11,26 @@ class BlogTest extends WebTestCase
 {
     public function test_create_simple_blog(): void
     {
-        $blog = new Blog();
+        $post = new Blog();
         static::bootKernel();
         $em = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
-        $blog->setTitle('Titulo');
-        $blog->setBody('Body');
-        $blog->setAutor(1);
-        $em->persist($blog);
+        $post->setTitle('Titulo');
+        $post->setBody('Body');
+        $post->setAutor(1);
+        $em->persist($post);
         $em->flush();
-        $this->assertEquals($blog instanceof Blog, true);
+        $this->assertEquals($post instanceof Blog, true);
     }
 
     public function test_edit_simple_blog(): void
     {
         static::bootKernel();
         $em = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
-        $blog = $em->getRepository(Blog::class)->findBy([], array('id'=>'DESC'), 1, 0)[0];
-        if ($blog) {
-            $blog->setTitle('Titulo2');
+        $post = $em->getRepository(Blog::class)->findBy([], array('id'=>'DESC'), 1, 0)[0];
+        if ($post) {
+            $post->setTitle('Titulo2');
             $em->flush();
         }
-        $this->assertEquals($blog instanceof Blog, true || null);
+        $this->assertEquals($post instanceof Blog, true || null);
     }
 }
