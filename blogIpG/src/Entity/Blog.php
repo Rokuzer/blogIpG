@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\BlogRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: BlogRepository::class)]
 class Blog
@@ -12,23 +13,23 @@ class Blog
     #[ORM\Id, ORM\GeneratedValue()]
     private $id;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private $codigo;
 
     #[ORM\Column(length: 255)]
     private $title;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::TEXT)]
     private $body;
 
     #[ORM\Column(length: 255)]
     private $autor;
 
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected $created_at;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected $update_at;
 
     /**
