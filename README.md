@@ -44,6 +44,30 @@ Formulario simple de la entidad Blog, que al darle a "Crear" creará un nuevo PO
 
 Nota: Cuando se crea en BBDD se lanza mediante el servicio una creación a la api.
 
+#### Api para listar y crear posts
+
+Se ha generado una api GET y POST para poder listar los posts del blog o crear un blog nuevo.
+
+
+### Aclaraciones
+ #### He querido utilizar tanto la api de servicio que proporciona https://jsonplaceholder.typicode.com/, como la creacion de una api de consumo de nuestro blog.
+ Por lo tanto: 
+ 
+ BlogIpGlobal consume jsonplaceholder
+ 
+ 1- Obtenemos datos de la api https://jsonplaceholder.typicode.com/posts
+ 
+ 2- Obtenemos autores de la api https://jsonplaceholder.typicode.com/users
+ 
+ Client consume BlogIpGlobal
+ 
+ 1- Se crean post en el blog con http://blogipglobal.rokuzer.es/api/addPost
+ 
+ 2- Se listan posts del blog con http://blogipglobal.rokuzer.es/api/posts
+ 
+ #### Se ha guardado el autor con el ID de la api de jsonplaceholder, para no crear campos adicionales a los blogs.
+ 
+
 ## Herramientas utilizadas
 * Boostrap 5.2
 * Symfony 6.1
@@ -55,4 +79,5 @@ Nota: Cuando se crea en BBDD se lanza mediante el servicio una creación a la ap
 * Curl para la API
 * POSTMAN para las pruebas de las integraciones.
 * PhpUnit para test unitarios (Crear y editar simple blog)
+* Swagger para la creación de documentación de la API
 
