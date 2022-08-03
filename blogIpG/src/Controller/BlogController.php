@@ -15,10 +15,14 @@ use App\Repository\BlogRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route("/", requirements={"_locale": "en|es|fr"}, name="blog_")
+ * Controlador del blog
  */
+#[Route('/', requirements: ['_locale' => 'en'], name: 'blog_')]
 class BlogController extends AbstractController
 {
+    /**
+     * Listado de posts
+     */
     #[Route('/', name: 'list')]
     public function list(EntityManagerInterface $em)
     {
@@ -31,13 +35,17 @@ class BlogController extends AbstractController
     }
 
     /**
-    * @Route("/show/{id}", name="show" )
+    * Función para visualizar un post
     */
+    #[Route('/show/{id}', name: 'show')]
     public function show(EntityManagerInterface $em, BlogApiServices $service, int $id): Response
     {
         $blog = $em->getRepository(Blog::class)->find($id);
-        $autor = $service->getAutor($blog->getAutor());
-        $post = ['blog' => $blog, 'autor' => $autor];
+        $post = null;
+        if ($blog) {
+            $autor = $service->getAutor($blog->getAutor());
+            $post = ['blog' => $blog, 'autor' => $autor];
+        }
 
         return $this->renderForm('blog/posted.html.twig', [
             'post' => $post,
@@ -77,8 +85,9 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/delete", name="delete")
+     * Funcion que borrará un post de la BBDD
      */
+    #[Route('/delete', name: 'delete')]
     public function delete(EntityManagerInterface $em, Request $request): Response
     {
         return $this->redirectToRoute('blog_list');
@@ -86,8 +95,8 @@ class BlogController extends AbstractController
 
     /**
      * funcion que actualizará los Blogs
-     * @Route("/update", name="update")
      */
+    #[Route('/update', name: 'update')]
     public function updatePosts(EntityManagerInterface $em, BlogApiServices $service)
     {
         $postsApi = $service->getPosts();
